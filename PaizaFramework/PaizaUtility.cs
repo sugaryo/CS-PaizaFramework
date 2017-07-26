@@ -82,5 +82,18 @@ namespace PaizaFramework
 				yield return s;
 			}
 		}
+
+		/// <summary>
+		/// 問題の入力データ取得（複雑なヘッダ形式をしている場合）
+		/// </summary>
+		/// <param name="parseHeaderRecord">ヘッダレコードを解析し、その後読み込むべきデータ行数を返すコールバックメソッド</param>
+		/// <returns>入力データの列挙</returns>
+		public static IEnumerable<string> ReadArgs( Func<string, int> parseHeaderRecord )
+		{
+			string header = IO.ReadLine();
+			int n = parseHeaderRecord( header );
+
+			return ReadArgs( n );
+		}
 	}
 }

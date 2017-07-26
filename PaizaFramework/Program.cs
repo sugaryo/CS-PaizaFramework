@@ -19,10 +19,12 @@ namespace PaizaFramework
 			private readonly string[] lines = @"
 
 // ▼▼ここにテストデータをコピペするのじゃ▼▼
-3
-hoge
-moge
-piyo
+2 3
+アフリカオオコノハズク
+ワシミミズク
+そうです
+我々は
+賢いので。
 // ▲▲ '//' 開始と空行は無視するから気にするな▲▲
 
 "
