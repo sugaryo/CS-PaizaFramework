@@ -12,6 +12,43 @@ namespace PaizaFramework
 	public static class PaizaUtility
 	{
 		/// <summary>
+		/// プロキシパターンでIOの向き先を変える為のインタフェース
+		/// </summary>
+		public interface ITestIO
+		{
+			string ReadLine();
+			void WriteLine( string line );
+		}
+		/// <summary>
+		/// ITestIO のデフォルト実装。
+		/// </summary>
+		public class ConsoleProxy : ITestIO
+		{
+			string ITestIO.ReadLine()
+			{
+				return Console.ReadLine();
+			}
+
+			void ITestIO.WriteLine( string line )
+			{
+				Console.WriteLine( line );
+			}
+		}
+
+		public static ITestIO IO { get; set; } = new ConsoleProxy();
+		
+		
+		public static string ReadLine()
+		{
+			return IO.ReadLine();
+		}
+
+		public static void WriteLine( string line )
+		{
+			IO.WriteLine( line );
+		}
+
+		/// <summary>
 		/// 問題の入力データ取得（入力データ行数が未定の場合）
 		/// </summary>
 		/// <remarks>
@@ -24,7 +61,7 @@ namespace PaizaFramework
 		public static IEnumerable<string> ReadArgs()
 		{
 			// 最初の入力が、後続するデータの行数になるらしい。
-			string x = Console.ReadLine();
+			string x = IO.ReadLine();
 			int n = int.Parse(x);
 
 			// 入力された行数ぶん、データ行の読み込みを行う。
@@ -40,7 +77,7 @@ namespace PaizaFramework
 			// 入力された行数ぶん、データ行の読み込みを行う。
 			for ( int i = 0; i < n; i++ )
 			{
-				string s = Console.ReadLine();
+				string s = IO.ReadLine();
 
 				yield return s;
 			}

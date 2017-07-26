@@ -8,31 +8,67 @@ namespace PaizaFramework
 {
 	class Program
 	{
-		static void Main( string[] args )
+		/// <summary>
+		/// <seealso cref="Console.ReadLine"/> の替わりに、固定のテストデータを返す <seealso cref="PaizaUtility.ITestIO"/> 実装
+		/// </summary>
+		private class TestData : PaizaUtility.ITestIO
 		{
-			try
+			/// <summary>
+			/// テストデータ
+			/// </summary>
+			private readonly string[] lines = @"
+
+// ▼▼ここにテストデータをコピペするのじゃ▼▼
+3
+hoge
+moge
+piyo
+// ▲▲ '//' 開始と空行は無視するから気にするな▲▲
+
+"
+				// ↓不要な LINQメソッド式 があれば適当にコメントアウトしてね↓
+				.Split(new [] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries )
+				.AsEnumerable()
+				.Select( s => s.Trim() )
+				.Where( s => !string.IsNullOrEmpty(s) )
+				.Where( s => !s.StartsWith("//") )
+				.ToArray()
+			;
+
+			private int index = 0;
+			
+			string PaizaUtility.ITestIO.ReadLine()
 			{
-				Answer();
+				return index < lines.Length ? lines[index++] : null;
 			}
-			catch ( Exception ex )
+
+			void PaizaUtility.ITestIO.WriteLine( string line )
 			{
-				Console.WriteLine( ex.Message );
+				Console.WriteLine( line );
 			}
 		}
 
 		/// <summary>
-		/// paiza の出題に回答するロジックを実装する
+		/// デフォルトでConsoleに向いているIOを↑のデバッグ用プロキシ実装に差し替える。
 		/// </summary>
-		/// <remarks>
-		/// 実際の回答時には、インナークラスとして PaizaUtility をコピペして使用する。
-		/// </remarks>
-		private static void Answer()
+		static Program()
 		{
-			var args = PaizaUtility.ReadArgs().ToList();
-
-			foreach ( var arg in args )
+			// もうちょっとカッコイイ実装（JavaのCDIみたいな）にしたかったけど、paiza用なんでこれで良いよね。
+			PaizaUtility.IO = new TestData();
+		}
+		
+		/// <summary>
+		/// ぶっちゃけ例外処理要らないみたいだから Do.Answer() だけ移植でも良い。
+		/// </summary>
+		static void Main( string[] args )
+		{
+			try
 			{
-				Console.WriteLine( "arg: " + arg );
+				Do.Answer();
+			}
+			catch ( Exception ex )
+			{
+				Console.WriteLine( ex.Message );
 			}
 		}
 	}
