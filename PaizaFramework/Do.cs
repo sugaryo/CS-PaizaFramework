@@ -21,10 +21,8 @@ namespace PaizaFramework
 			int b = 0;
 			Func<string, int> parser = ( header ) =>
 			{
-				int[] token = header
-						.Split( new []{ " " }, StringSplitOptions.RemoveEmptyEntries )
-						.AsEnumerable()
-						.Select( x => int.Parse(x) )
+				int[] token = PaizaUtility
+						.SplitAsInt( header )
 						.ToArray();
 
 				// 二種類のデータ数をそれぞれ控える。

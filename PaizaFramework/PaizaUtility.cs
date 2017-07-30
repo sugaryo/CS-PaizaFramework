@@ -95,5 +95,84 @@ namespace PaizaFramework
 
 			return ReadArgs( n );
 		}
+
+
+		#region 普段なら拡張メソッドで追加するんだけどpaiza回答コードだと微妙だったので。
+		/// <summary>
+		/// 指定した文字列を指定した分割子で分割します。
+		/// </summary>
+		/// <remarks>
+		/// このメソッドは以下の実装とほぼ等価です。
+		/// <code>
+		/// return s.Split( new []{ by }, StringSplitOptions.None );
+		/// // by パラメータは params なので、実際には new[] は不要。
+		/// </code>
+		/// <param name="s">分割する文字列</param>
+		/// <param name="by">分割子（params parameter）</param>
+		/// <returns>分割子で分割した文字列配列</returns>
+		public static string[] SplitBy(
+				string s, 
+				params string[] by )
+		{
+			return SplitBy( s, StringSplitOptions.None, by );
+		}
+		/// <summary>
+		/// 指定した文字列を指定した分割子で分割します。
+		/// </summary>
+		/// <remarks>
+		/// このメソッドは以下の実装とほぼ等価です。
+		/// <code>
+		/// return s.Split( new []{ by }, option );
+		/// // by パラメータは params なので、実際には new[] は不要。
+		/// </code>
+		/// </remarks>
+		/// <param name="s">分割する文字列</param>
+		/// <param name="option">分割オプション（<seealso cref="StringSplitOptions"/>）</param>
+		/// <param name="by">分割子（params parameter）</param>
+		/// <returns>分割子で分割した文字列配列</returns>
+		public static string[] SplitBy( 
+				string s, 
+				StringSplitOptions option,
+				params string[] splitter )
+		{
+			return s.Split( splitter, option );
+		}
+
+		/// <summary>
+		/// 指定した文字列を半角スペース <c>" "</c> で分割します。
+		/// </summary>
+		/// <remarks>
+		/// paiza の出題で最も頻出する、スペースで区切られたトークンを処理する為のユーティリティです。
+		/// </remarks>
+		/// <param name="s">分割する文字列</param>
+		/// <returns>分割した文字列配列</returns>
+		public static string[] SplitSpace( string s )
+		{
+			return SplitBy( s, " " );
+		}
+		/// <summary>
+		/// 指定した文字列を半角スペース <c>" "</c> で分割し、パーサを通して任意の型に変換して返します。
+		/// </summary>
+		/// <typeparam name="T">返す型</typeparam>
+		/// <param name="s">分割する文字列</param>
+		/// <param name="parser">パーサ（分割した文字列トークンを任意の型に変換するデリゲートを指定して下さい）</param>
+		/// <returns>分割、パースした <code>T</code>型の列挙</returns>
+		public static IEnumerable<T> SplitAs<T>( string s, Func<string, T> parser )
+		{
+			return SplitSpace( s ).Select( parser );
+		}
+		/// <summary>
+		/// 指定した文字列を半角スペース <c>" "</c> で分割し、<seealso cref="int"/> で返します。
+		/// </summary>
+		/// <remarks>
+		/// paiza の出題で最も頻出する、スペースで区切られた整数トークンを処理する為のユーティリティです。
+		/// </remarks>
+		/// <param name="s">分割する文字列</param>
+		/// <returns>分割、パースした<seealso cref="int"/>の列挙</returns>
+		public static IEnumerable<int> SplitAsInt( string s )
+		{
+			return SplitAs( s, int.Parse );
+		}
+		#endregion
 	}
 }
