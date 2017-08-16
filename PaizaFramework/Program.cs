@@ -19,12 +19,17 @@ namespace PaizaFramework
 			private readonly string[] lines = @"
 
 // ▼▼ここにテストデータをコピペするのじゃ▼▼
-2 3
-アフリカオオコノハズク
-ワシミミズク
-そうです
-我々は
-賢いので。
+4
+abcd
+efgh
+hgfe
+dcba
+5
+abfgf
+bfgc
+abfga
+hdc
+fghde
 // ▲▲ '//' 開始と空行は無視するから気にするな▲▲
 
 "
@@ -72,6 +77,10 @@ namespace PaizaFramework
 			{
 				Console.WriteLine( ex.Message );
 			}
+
+#if DEBUG
+			Console.ReadKey();
+#endif
 		}
 	}
 }
