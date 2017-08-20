@@ -36,8 +36,8 @@ namespace PaizaFramework
 		}
 
 		public static ITestIO IO { get; set; } = new ConsoleProxy();
-		
-		
+
+
 		public static string ReadLine()
 		{
 			return IO.ReadLine();
@@ -72,7 +72,7 @@ namespace PaizaFramework
 		/// </summary>
 		/// <param name="n">入力行数</param>
 		/// <returns>入力データの列挙</returns>
-		public static IEnumerable<string> ReadArgs(int n)
+		public static IEnumerable<string> ReadArgs( int n )
 		{
 			// 入力された行数ぶん、データ行の読み込みを行う。
 			for ( int i = 0; i < n; i++ )
@@ -95,6 +95,28 @@ namespace PaizaFramework
 
 			return ReadArgs( n );
 		}
+
+		/// <summary>
+		/// 問題の入力データ取得（単一の整数だけが与えられる行読み込み）
+		/// </summary>
+		/// <returns>入力を１行だけ読み込み、<seealso cref="int"/> を返します。</returns>
+		public static int ReadCount()
+		{
+			string x = IO.ReadLine();
+
+			return int.Parse( x );
+		}
+		/// <summary>
+		/// 問題の入力データ取得（複数の整数が与えられる行読み込み）
+		/// </summary>
+		/// <returns>入力を１行だけ読み込み、半角スペース <c>" "</c> で分割して <seealso cref="int"/> の列挙を返します。</returns>
+		public static IEnumerable<int> ReadCounts()
+		{
+			string x = IO.ReadLine();
+
+			return SplitAsInt( x );
+		}
+	
 
 
 		#region 普段なら拡張メソッドで追加するんだけどpaiza回答コードだと微妙だったので。
